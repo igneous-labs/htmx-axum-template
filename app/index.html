@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- <script type="module"> is always `defer` -->
+    <script type="module" src="/js/index.js"></script>
+
+    <link href="css/index.css" rel="stylesheet" />
+
+    <!-- everything below here is required for PWA-->
+    <!-- default output of vite-plugin-pwa -->
+
+    <!-- TODO: for some reason everything but manifest.webmanifest -->
+    <!-- has the root prefix correctly set at build time -->
+    <link rel="manifest" href="/vite-vanilla-template/manifest.webmanifest" />
+    <!-- TODO: use actual theme colors from tailwind-->
+    <meta name="theme-color" content="#FFFFFF" />
+    <!-- generate all below logos using https://realfavicongenerator.net/ -->
+    <!-- see: https://vite-pwa-org.netlify.app/guide/pwa-minimal-requirements.html -->
+    <link rel="icon" href="/favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      href="/images/logo/apple-touch-icon.png"
+      sizes="180x180"
+    />
+    <link
+      rel="mask-icon"
+      href="/images/logo/logo_512x512.png"
+      color="#FFFFFF"
+    />
+    <meta name="description" content="This is a test web app" />
+    <meta name="msapplication-TileColor" content="#000000" />
+    <meta name="msapplication-TileImage" content="/mstile-150x150.png" />
+    <!-- needed for media queries -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, minimum-scale=1"
+    />
+    <title data-i18n-key="title">My Web App</title>
+  </head>
+  <body class="flex flex-col items-center space-y-1 px-4 py-2">
+    <h1 class="space-y-1 self-center text-center">Hello World!</h1>
+  </body>
+</html>

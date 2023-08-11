@@ -1,0 +1,35 @@
+{
+  // The 3 most important one:
+  // Enable semantic checking of JavaScript files.
+  // Existing jsconfig.json or tsconfig.json files override this setting.
+  "js/ts.implicitProjectConfig.checkJs": true,
+  // Enable suggestion to complete JSDoc comments.
+  "javascript.suggest.completeJSDocs": true,
+  // Preferred path ending with extension (good for ESM & cjs).
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+
+  // Other suggestions useful stuff:
+  // Complete functions with their parameter signature.
+  "javascript.suggest.completeFunctionCalls": true,
+
+  // Enable auto import suggestions.
+  "javascript.suggest.autoImports": true,
+
+  // tab size 2 for js
+  "[javascript]": {
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.tabSize": 2
+  },
+  "[jsonc]": {
+    "editor.tabSize": 2
+  },
+  "[css]": {
+    "editor.tabSize": 2
+  },
+  "[html]": {
+    // doesnt follow 4 convention but consistent with prettier
+    "editor.tabSize": 2
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "my-web-app",
+  "version": "0.0.0",
+  "scripts": {
+    "build": "vite build",
+    "preview": "vite build && vite preview",
+    "pretty": "prettier --write \"**/*.css\" \"**/*.json\" \"**/*.md\"",
+    "lint": "eslint --fix \"**/*.js\" \"**/*.html\" && prettier --write \"**/*.js\" \"**/*.html\""
+  },
+  "devDependencies": {
+    "@html-eslint/eslint-plugin": "^0.16.0",
+    "@html-eslint/parser": "^0.16.0",
+    "autoprefixer": "^10.4.13",
+    "eslint": "^8.34.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-import-resolver-jsconfig": "^1.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "glob": "^9.3.2",
+    "postcss": "^8.4.21",
+    "postcss-import": "^15.1.0",
+    "prettier": "^2.8.4",
+    "prettier-plugin-tailwindcss": "^0.2.4",
+    "tailwindcss": "^3.2.7",
+    "vite": "^4.1.4",
+    "vite-plugin-pwa": "^0.14.4"
+  }
+}
