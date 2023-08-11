@@ -4,6 +4,7 @@
 import glob from "glob";
 import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
+import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // import path from "path" causes eslint to crash for some reason
 const path = require("path");
@@ -37,7 +38,18 @@ export default defineConfig({
       { find: "@", replacement: __dirname },
     ],
   },
+  // we want to preserve the same directory structure between / at dev time and
+  // dist/ at prod time, so copy static files manually with viteStaticCopy
+  // instead of using the public/ dir
+  publicDir: false,
   plugins: [
+    viteStaticCopy({
+      targets: [
+        { src: "robots.txt", dest: "" },
+        { src: "favicon.ico", dest: "" },
+        { src: "images/", dest: "" },
+      ],
+    }),
     VitePWA({
       includeAssets: [`favicon.ico`, `images/logo/apple-touch-icon.png`],
       manifest: {
