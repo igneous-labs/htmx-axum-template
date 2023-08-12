@@ -2,3 +2,6 @@
 dist/
 
 pnpm-lock.yaml
+
+# don't mess up {{ }}
+templates/

@@ -3,7 +3,7 @@ module.exports = {
   env: {
     browser: true,
   },
-  ignorePatterns: ["dist/*"],
+  ignorePatterns: ["dist/*", "templates/*"],
   overrides: [
     // TODO: include eslint for tailwindcss:
     // https://github.com/francoismassart/eslint-plugin-tailwindcss
@@ -31,7 +31,10 @@ module.exports = {
         },
       },
       rules: {
-        "import/extensions": "off",
+        "no-restricted-imports": "off",
+        "import/ignore": "off",
+        "import/extensions": "off", // allow `import X from "../node_modules/.../X.js"`
+        "import/no-relative-packages": "off", // allow `import X from "../node_modules/..."`
         "import/prefer-default-export": "off",
         "no-restricted-syntax": [
           "error",
