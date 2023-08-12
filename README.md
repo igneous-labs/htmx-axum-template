@@ -8,6 +8,7 @@ Template for web apps using:
 - vite for bundling js
 - pnpm for package management
 - pre-commit for linting both backend and frontend code
+- x86_64-unknown-linux-musl as rust compile target to produce a fully static binary
 
 ## How this works
 
@@ -20,7 +21,7 @@ Directory structure:
 ├── src
 ```
 
-The axum server simply statically serves all files in the `app/` dir next to it at path `/`.
+Apart from using the html templates in `app/` for htmx, the axum server also simply statically serves all files in the `app/` dir next to it at path `/`.
 
 At development time, any changes to the static frontend src files in `app/` are immediately reflected.
 
@@ -30,7 +31,7 @@ This however introduce the following quirks:
 - during development, `cargo run` must be run at the project root or the `app/` folder will not be served
 - js dependency imports must import directly from `../node_modules/` since a simple static file server doesn't know how to resolve esm imports
 - tailwindcss must be manually updated with `pnpm tailwind` whenever css changes are made, and the frontend files must use the build output during development time
-- we cannot use vite's publicDir feature in order to preserve same directory structure at dev and prod time
+- we cannot use vite's publicDir feature in order to preserve the same directory structure at dev and prod time
 
 ## Setup
 
