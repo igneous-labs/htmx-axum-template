@@ -64,3 +64,5 @@ Add the files to `app/`, treating it as the `/` path, then update the `viteStati
 ## Production
 
 `docker build -t my-web-app .`
+
+`docker run -p 3000:3000 --name my-web-app --init --rm my-web-app`

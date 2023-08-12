@@ -6,7 +6,7 @@
     "preview": "vite build && vite preview",
     "pretty": "prettier --write \"**/*.css\" \"**/*.json\"",
     "lint": "eslint --fix \"**/*.js\" \"**/*.html\" && prettier --write \"**/*.js\" \"**/*.html\"",
-    "tailwind": "tailwindcss -i css/index.css -o css/prod.css --minify"
+    "tailwind": "tailwindcss -i css/index.css -o css/prod.css"
   },
   "devDependencies": {
     "@html-eslint/eslint-plugin": "^0.16.0",

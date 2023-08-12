@@ -2,8 +2,15 @@
 FROM node:18-alpine3.18 as vite
 WORKDIR /app
 RUN npm install -g pnpm
-COPY app .
+
+FROM vite as npm-installer
+COPY app/pnpm-lock.yaml .
+COPY app/package.json .
 RUN pnpm install
+
+FROM vite as frontend-builder
+COPY --from=npm-installer app/node_modules ./node_modules
+COPY app .
 RUN pnpm build
 
 # rust build
@@ -28,5 +35,5 @@ RUN cargo build --release --no-default-features --target x86_64-unknown-linux-mu
 FROM scratch
 WORKDIR /
 COPY --from=builder /server/target/x86_64-unknown-linux-musl/release/my-web-app /my-web-app
-COPY --from=vite /app/dist /app
+COPY --from=frontend-builder /app/dist /app
 CMD ["/my-web-app"]
