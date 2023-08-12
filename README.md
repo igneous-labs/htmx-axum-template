@@ -63,4 +63,4 @@ Add the files to `app/`, treating it as the `/` path, then update the `viteStati
 
 ## Production
 
-`Dockerfile` creates a production-ready docker image
+`docker build -t my-web-app .`

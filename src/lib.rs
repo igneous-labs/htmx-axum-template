@@ -5,7 +5,9 @@ use serde::{Deserialize, Serialize};
 use tower_http::{
     compression::Compression,
     services::{ServeDir, ServeFile},
+    trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer},
 };
+use tracing::Level;
 
 pub const TEMPLATE_PATH: &str = "app/templates";
 
@@ -18,6 +20,11 @@ lazy_static! {
 }
 
 pub async fn main() {
+    tracing_subscriber::fmt()
+        .with_target(false)
+        .compact()
+        .init();
+
     let static_files = Compression::new(
         ServeDir::new("app") // if no files found, check your pwd to make sure it's at project root
             .fallback(ServeFile::new("app/404.html")),
@@ -25,7 +32,12 @@ pub async fn main() {
 
     let app = Router::new()
         .route("/index/name", post(name))
-        .fallback_service(static_files);
+        .fallback_service(static_files)
+        .layer(
+            TraceLayer::new_for_http()
+                .make_span_with(DefaultMakeSpan::new().level(Level::INFO))
+                .on_response(DefaultOnResponse::new().level(Level::INFO)),
+        );
 
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
         .serve(app.into_make_service())
