@@ -4,8 +4,9 @@
   "scripts": {
     "build": "vite build",
     "preview": "vite build && vite preview",
-    "pretty": "prettier --write \"**/*.css\" \"**/*.json\" \"**/*.md\"",
-    "lint": "eslint --fix \"**/*.js\" \"**/*.html\" && prettier --write \"**/*.js\" \"**/*.html\""
+    "pretty": "prettier --write \"**/*.css\" \"**/*.json\"",
+    "lint": "eslint --fix \"**/*.js\" \"**/*.html\" && prettier --write \"**/*.js\" \"**/*.html\"",
+    "tailwind": "tailwindcss -i css/index.css -o css/prod.css --minify"
   },
   "devDependencies": {
     "@html-eslint/eslint-plugin": "^0.16.0",
@@ -26,5 +27,8 @@
     "vite": "^4.1.4",
     "vite-plugin-pwa": "^0.14.4",
     "vite-plugin-static-copy": "^0.17"
+  },
+  "dependencies": {
+    "htmx.org": "^1.9.4"
   }
 }

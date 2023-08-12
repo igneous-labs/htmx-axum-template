@@ -10,10 +10,10 @@ repos:
       - id: prettier
         name: prettier
         language: system
-        entry: bash -c "cd app && pnpm pretty"
+        entry: sh -c "cd app && pnpm pretty"
   - repo: local
     hooks:
       - id: eslint
         name: eslint
         language: system
-        entry: bash -c "cd app && pnpm lint"
+        entry: sh -c "cd app && pnpm lint"

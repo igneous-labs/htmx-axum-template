@@ -1,6 +1,24 @@
 [package]
-name = "htmx-axum"
+name = "my-web-app"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "my_web_app"
+
+[[bin]]
+name = "my-web-app"
+
+[features]
+default = ["dev"]
+dev = ["minijinja-autoreload", "minijinja/debug"]
+
 [dependencies]
+ammonia = "^3"
+axum = "^0.6"
+lazy_static = "^1"
+minijinja = { version = "^1.0", default-features = false, features = ["loader"] }
+minijinja-autoreload = { version = "^1.0", optional = true }
+serde = { version = "^1", features = ["derive"] }
+tokio = { version = "^1", features = ["macros", "rt-multi-thread"] }
+tower-http = { version = "^0.4", features = ["fs"] }

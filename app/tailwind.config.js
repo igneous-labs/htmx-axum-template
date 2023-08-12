@@ -2,7 +2,13 @@
 module.exports = {
   // dont use overly-broad patterns like ./**/*.{js,css,html}
   // since this has no exclude option
-  content: ["./index.html", "./404.html", "./css/**/*.css", "./js/**/*.js"],
+  content: [
+    "./index.html",
+    "./404.html",
+    "templates/**/*.html",
+    "./css/**/*.css",
+    "./js/**/*.js",
+  ],
   plugins: [],
   darkMode: "class",
   theme: {

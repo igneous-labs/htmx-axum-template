@@ -32,12 +32,6 @@ export default defineConfig({
       ),
     },
   },
-  resolve: {
-    alias: [
-      // to allow `import a from "@/js/a"` to work in prod
-      { find: "@", replacement: __dirname },
-    ],
-  },
   // we want to preserve the same directory structure between / at dev time and
   // dist/ at prod time, so copy static files manually with viteStaticCopy
   // instead of using the public/ dir

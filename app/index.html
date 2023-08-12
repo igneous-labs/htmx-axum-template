@@ -4,7 +4,7 @@
     <!-- <script type="module"> is always `defer` -->
     <script type="module" src="/js/index.js"></script>
 
-    <link href="css/index.css" rel="stylesheet" />
+    <link href="/css/prod.css" rel="stylesheet" />
 
     <!-- everything below here is required for PWA-->
     <!-- default output of vite-plugin-pwa -->
@@ -38,6 +38,11 @@
     <title data-i18n-key="title">My Web App</title>
   </head>
   <body class="flex flex-col items-center space-y-1 px-4 py-2">
-    <h1 class="space-y-1 self-center text-center">Hello World!</h1>
+    <h1 class="space-y-1 self-center text-center">My Web App</h1>
+    <form hx-post="/index/name" class="flex flex-col space-y-1">
+      <label for="name">Enter your name:</label>
+      <input id="name" name="name" class="border" />
+      <button type="submit" class="border">Submit</button>
+    </form>
   </body>
 </html>

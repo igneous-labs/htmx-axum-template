@@ -31,13 +31,8 @@ module.exports = {
         },
       },
       rules: {
+        "import/extensions": "off",
         "import/prefer-default-export": "off",
-        "no-restricted-imports": [
-          "error",
-          {
-            patterns: [".*"],
-          },
-        ],
         "no-restricted-syntax": [
           "error",
           {
