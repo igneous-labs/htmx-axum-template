@@ -1,27 +1,14 @@
 use axum::{http::StatusCode, response::Html, routing::post, Form, Router};
 use lazy_static::lazy_static;
 use minijinja::{path_loader, Environment};
-use minijinja_autoreload::EnvironmentGuard;
 use serde::{Deserialize, Serialize};
-use tower_http::services::{ServeDir, ServeFile};
+use tower_http::{
+    compression::Compression,
+    services::{ServeDir, ServeFile},
+};
 
 pub const TEMPLATE_PATH: &str = "app/templates";
 
-#[cfg(feature = "dev")]
-lazy_static! {
-    pub static ref TEMPLATES: EnvironmentGuard<'static> = {
-        let reloader = Box::new(minijinja_autoreload::AutoReloader::new(|notifier| {
-            let mut env = Environment::new();
-            env.set_loader(path_loader(TEMPLATE_PATH));
-            notifier.watch_path(TEMPLATE_PATH, true);
-            Ok(env)
-        }));
-        let reloader: &'static mut minijinja_autoreload::AutoReloader = Box::leak(reloader);
-        reloader.acquire_env().unwrap()
-    };
-}
-
-#[cfg(not(feature = "dev"))]
 lazy_static! {
     pub static ref TEMPLATES: Environment<'static> = {
         let mut env = Environment::new();
@@ -31,12 +18,14 @@ lazy_static! {
 }
 
 pub async fn main() {
+    let static_files = Compression::new(
+        ServeDir::new("app") // if no files found, check your pwd to make sure it's at project root
+            .fallback(ServeFile::new("app/404.html")),
+    );
+
     let app = Router::new()
         .route("/index/name", post(name))
-        .fallback_service(
-            ServeDir::new("app") // if no files found, check your pwd to make sure it's at project root
-                .fallback(ServeFile::new("app/404.html")),
-        );
+        .fallback_service(static_files);
 
     axum::Server::bind(&"0.0.0.0:3000".parse().unwrap())
         .serve(app.into_make_service())
