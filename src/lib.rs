@@ -1,6 +1,6 @@
 use axum::{http::StatusCode, response::Html, routing::post, Form, Router};
-use lazy_static::lazy_static;
 use minijinja::{path_loader, Environment};
+use minijinja_autoreload::AutoReloader;
 use serde::{Deserialize, Serialize};
 use tower_http::{
     compression::Compression,
@@ -11,12 +11,13 @@ use tracing::Level;
 
 pub const TEMPLATE_PATH: &str = "app/templates";
 
-lazy_static! {
-    pub static ref TEMPLATES: Environment<'static> = {
+fn get_reloader() -> AutoReloader {
+    AutoReloader::new(|notifier| {
         let mut env = Environment::new();
         env.set_loader(path_loader(TEMPLATE_PATH));
-        env
-    };
+        notifier.watch_path(TEMPLATE_PATH, true);
+        Ok(env)
+    })
 }
 
 pub async fn main() {
@@ -52,7 +53,9 @@ pub struct Name {
 
 pub async fn name(Form(mut name): Form<Name>) -> axum::response::Result<Html<String>> {
     name.name = ammonia::clean(&name.name);
-    let template = TEMPLATES.get_template("name.html").unwrap();
+    let env = get_reloader();
+    let templates = env.acquire_env().unwrap();
+    let template = templates.get_template("name.html").unwrap();
     let html = template
         .render(&name)
         .map_err(|_| StatusCode::from_u16(500).unwrap())?;
