@@ -30,7 +30,7 @@ At production time, simply move the `dist/` output of `vite build` to an `app/` 
 This however introduce the following quirks:
 - during development, `cargo run` must be run at the project root or the `app/` folder will not be served
 - js dependency imports must import directly from `../node_modules/` since a simple static file server doesn't know how to resolve esm imports
-- tailwindcss must be manually updated with `pnpm tailwind` whenever css changes are made, and the frontend files must use the build output during development time
+- the frontend files must use the tailwindcss build output during development time, since a simple static file server doesn't know how to preprocess css
 - we cannot use vite's publicDir feature in order to preserve the same directory structure at dev and prod time
 
 ## Setup
@@ -56,7 +56,11 @@ This however introduce the following quirks:
 
 ### CSS
 
-On any changes to the CSS, run `pnpm tailwind` in `app/` to update
+Run `pnpm tailwind-watch` in the `app` folder for tailwind CSS live-reloading
+
+### Both
+
+`./dev.sh` runs `pnpm tailwind-watch` in the background and `cargo run dev` in the foreground, killing both processes if interrupted (Ctrl+C). This still requires full page reloads to get any updated CSS styles.
 
 ### Adding static files
 
