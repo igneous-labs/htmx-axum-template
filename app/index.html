@@ -1,9 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Can't import script without this line -->
+    <base href="/" />
+
+    <!-- Map relative imports straight from node_modules like this because axum is serving the static files in dev mode, not vite, and it knows nothing about resolving esm imports -->
+    <script type="importmap">
+      {
+        "imports": {
+          "htmx.org": "./node_modules/htmx.org/dist/htmx.js",
+          "wallet-standard-list": "./node_modules/wallet-standard-list/src/index.js",
+          "@wallet-standard/app": "./node_modules/wallet-standard-list/node_modules/@wallet-standard/app/lib/esm/index.js"
+        }
+      }
+    </script>
+
+    <!-- "@web3modal/ethereum": "./node_modules/@web3modal/ethereum/dist/index.js",
+            "@wagmi/core": "./node_modules/@wagmi/core/dist/index.js",
+            "@wagmi/connectors": "./node_modules/@wagmi/core/dist/connectors/index.js",
+            "@wagmi/core/connectors/walletConnect": "./node_modules/@wagmi/core/dist/connectors/walletConnect.js",
+            "@wagmi/connectors/injected": "./node_modules/@wagmi/core/dist/connectors/injected.js",
+            "@wagmi/core/providers/jsonRpc": "./node_modules/@wagmi/core/dist/providers/jsonRpc.js",
+            "@web3modal/html": "./node_modules/@web3modal/html/dist/index.js",
+            "viem": "./node_modules/viem/dist/esm/index.js",
+            "viem/ens": "./node_modules/viem/dist/esm/ens.js",
+            "abitype": "./node_modules/abitype/dist/esm/index.js",
+            "@noble/hashes/sha3": "./node_modules/@noble/hashes/esm/sha3.js",
+            "@noble/hashes/crypto": "./node_modules/@noble/hashes/esm/crypto.js",
+            "@noble/curves/abstract/utils": "./node_modules/@noble/curves/abstract/utils.js",
+            "@noble/curves/secp256k1": "./node_modules/@noble/curves/secp256k1.js",
+            "zustand/middleware": "./node_modules/zustand/middleware.js",
+            "zustand/vanilla": "./node_modules/zustand/vanilla.js",
+            "zustand/shallow": "./node_modules/zustand/shallow.js" -->
+
     <!-- <script type="module"> is always `defer` -->
     <script type="module" src="/js/index.js"></script>
-
     <link href="/css/prod.css" rel="stylesheet" />
 
     <!-- everything below here is required for PWA-->
@@ -42,5 +73,18 @@
       <input id="name" name="name" class="border" />
       <button type="submit" class="border">Submit</button>
     </form>
+
+    <wallet-standard-list
+      required-features="solana:signAndSendTransaction, solana:signTransaction"
+    ></wallet-standard-list>
+
+    <h3>Connected Wallet: <span id="connected-wallet">None</span></h3>
+    <h3>First Account: <span id="first-account">None</span></h3>
+    <footer>
+      <button type="button" id="disconnect-button" disabled>Disconnect</button>
+      <button type="button" id="stake-button" disabled>
+        Stake 1 SOL to Laine
+      </button>
+    </footer>
   </body>
 </html>

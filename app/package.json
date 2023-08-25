@@ -30,6 +30,11 @@
     "vite-plugin-static-copy": "^0.17"
   },
   "dependencies": {
-    "htmx.org": "^1.9.4"
+    "@wagmi/core": "^1.3.9",
+    "@web3modal/ethereum": "^2.7.1",
+    "@web3modal/html": "^2.7.1",
+    "htmx.org": "^1.9.4",
+    "viem": "^1.7.0",
+    "wallet-standard-list": "link:../../wallet-standard-list/wallet-standard-list"
   }
 }
