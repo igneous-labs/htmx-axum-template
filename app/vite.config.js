@@ -6,10 +6,35 @@ import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 import { viteStaticCopy } from "vite-plugin-static-copy";
 
-// import path from "path" causes eslint to crash for some reason
+// import from "path" and "fs" causes eslint to crash for some reason
 const path = require("path");
+const { readFileSync, writeFileSync } = require("fs");
 
-export default defineConfig({
+function prodScriptPlugin(command) {
+  return {
+    name: "prod-script",
+    buildStart() {
+      if (command === "build") {
+        const targetFilePath = path.resolve(__dirname, "./templates/base.html");
+
+        const html = readFileSync(targetFilePath, "utf-8");
+
+        const updatedHtml = html.replace(
+          `<script type="module">
+      import "http://localhost:5173/@vite/client";
+      window.process = { env: { NODE_ENV: "development" } };
+    </script>
+    <script type="module" src="http://localhost:5173/js/index.js"></script>`,
+          `<script type="module" src="/js/index.js"></script>`,
+        );
+
+        writeFileSync(targetFilePath, updatedHtml);
+      }
+    },
+  };
+}
+
+export default defineConfig(({ command }) => ({
   appType: "mpa",
   build: {
     // include source maps if env var set to true
@@ -24,11 +49,11 @@ export default defineConfig({
             return [
               baseName.slice(
                 0,
-                baseName.length - path.extname(baseName).length
+                baseName.length - path.extname(baseName).length,
               ),
               htmlFilePath,
             ];
-          })
+          }),
       ),
     },
   },
@@ -76,5 +101,6 @@ export default defineConfig({
         background_color: "#FFFFFF",
       },
     }),
+    prodScriptPlugin(command),
   ],
-});
+}));

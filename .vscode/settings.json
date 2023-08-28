@@ -17,7 +17,8 @@
 
   // tab size 2 for js
   "[javascript]": {
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
     "editor.tabSize": 2
@@ -30,6 +31,9 @@
   },
   "[html]": {
     // doesnt follow 4 convention but consistent with prettier
-    "editor.tabSize": 2
-  }
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

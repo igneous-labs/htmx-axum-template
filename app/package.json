@@ -2,10 +2,11 @@
   "name": "my-web-app",
   "version": "0.0.0",
   "scripts": {
+    "dev": "vite dev",
     "build": "vite build",
     "preview": "vite build && vite preview",
-    "pretty": "prettier --write \"**/*.css\" \"**/*.json\"",
-    "lint": "eslint --fix \"**/*.js\" \"**/*.html\" && prettier --write \"**/*.js\" \"**/*.html\"",
+    "pretty": "prettier --write \"templates/*.html\" \"**/*.css\" \"**/*.js\" \"**/*.json\"",
+    "lint": "eslint --fix \"**/*.js\" \"**/*.html\"",
     "tailwind": "tailwindcss -i css/index.css -o css/prod.css",
     "tailwind-watch": "tailwindcss -i css/index.css -o css/prod.css --watch=always"
   },
@@ -22,9 +23,10 @@
     "glob": "^9.3.2",
     "postcss": "^8.4.21",
     "postcss-import": "^15.1.0",
-    "prettier": "^2.8.4",
-    "prettier-plugin-tailwindcss": "^0.2.4",
-    "tailwindcss": "^3.2.7",
+    "prettier": "^3.0.2",
+    "prettier-plugin-jinja-template": "^1.0.0",
+    "prettier-plugin-tailwindcss": "^0.5.3",
+    "tailwindcss": "^3.3.3",
     "vite": "^4.1.4",
     "vite-plugin-pwa": "^0.14.4",
     "vite-plugin-static-copy": "^0.17"

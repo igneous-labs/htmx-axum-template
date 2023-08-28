@@ -4,17 +4,17 @@ trap on_ctrl_c INT
 
 PROJECT_ROOT=$(dirname $(readlink -f "$0"))
 
-unset -v TAILWIND_WATCH_PID
+unset -v VITE_DEV_PID
 
 on_ctrl_c() {
-    if [ ! -z ${TAILWIND_WATCH_PID+x} ]; then
-        echo "killing tailwind-watch"
-        kill -s INT $TAILWIND_WATCH_PID
+    if [ ! -z ${VITE_DEV_PID+x} ]; then
+        echo "killing dev"
+        kill -s INT $VITE_DEV_PID
     fi
     exit
 }
 
-cd $PROJECT_ROOT/app && pnpm tailwind-watch &
-TAILWIND_WATCH_PID=$!
+cd $PROJECT_ROOT/app && pnpm dev &
+VITE_DEV_PID=$!
 
 cd $PROJECT_ROOT && cargo run dev

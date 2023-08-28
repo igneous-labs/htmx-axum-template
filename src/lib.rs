@@ -1,4 +1,9 @@
-use axum::{http::StatusCode, response::Html, routing::post, Form, Router};
+use axum::{
+    http::StatusCode,
+    response::Html,
+    routing::{get, post},
+    Form, Router,
+};
 use lazy_static::lazy_static;
 use minijinja::{path_loader, Environment};
 use minijinja_autoreload::AutoReloader;
@@ -35,6 +40,7 @@ pub async fn main() {
     );
 
     let app = Router::new()
+        .route("/", get(home))
         .route("/index/name", post(name))
         .fallback_service(static_files)
         .layer(
@@ -47,6 +53,15 @@ pub async fn main() {
         .serve(app.into_make_service())
         .await
         .unwrap();
+}
+
+pub async fn home() -> axum::response::Result<Html<String>> {
+    let env = TEMPLATES.acquire_env().unwrap();
+    let template = env.get_template("index.html").unwrap();
+    let html = template
+        .render(())
+        .map_err(|_| StatusCode::from_u16(500).unwrap())?;
+    Ok(html.into())
 }
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
