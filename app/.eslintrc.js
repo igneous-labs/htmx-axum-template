@@ -5,15 +5,6 @@ module.exports = {
   },
   ignorePatterns: ["dist/*", "templates/*"],
   overrides: [
-    // TODO: include eslint for tailwindcss:
-    // https://github.com/francoismassart/eslint-plugin-tailwindcss
-    // doesn't work with @html-eslint/parser parser
-    {
-      files: "*.html",
-      parser: "@html-eslint/parser",
-      plugins: ["@html-eslint"],
-      extends: ["plugin:@html-eslint/recommended"],
-    },
     {
       files: "*.js",
       plugins: ["simple-import-sort"],

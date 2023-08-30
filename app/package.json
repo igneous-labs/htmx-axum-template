@@ -5,14 +5,12 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite build && vite preview",
-    "pretty": "prettier --write \"templates/*.html\" \"**/*.css\" \"**/*.js\" \"**/*.json\"",
-    "lint": "eslint --fix \"**/*.js\" \"**/*.html\"",
+    "pretty": "prettier --write \"**/*.html\" \"**/*.css\" \"**/*.js\" \"**/*.json\"",
+    "lint": "eslint --fix \"**/*.js\"",
     "tailwind": "tailwindcss -i css/index.css -o css/prod.css",
     "tailwind-watch": "tailwindcss -i css/index.css -o css/prod.css --watch=always"
   },
   "devDependencies": {
-    "@html-eslint/eslint-plugin": "^0.16.0",
-    "@html-eslint/parser": "^0.16.0",
     "autoprefixer": "^10.4.13",
     "eslint": "^8.34.0",
     "eslint-config-airbnb-base": "^15.0.0",
@@ -37,6 +35,6 @@
     "@web3modal/html": "^2.7.1",
     "htmx.org": "^1.9.4",
     "viem": "^1.7.0",
-    "wallet-standard-list": "link:../../wallet-standard-list/wallet-standard-list"
+    "wallet-standard-list": "0.1.0"
   }
 }
