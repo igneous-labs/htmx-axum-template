@@ -56,45 +56,62 @@ function prodScriptPlugin(command) {
   };
 }
 
+/**
+ *
+ * @param {"build" | "serve"} command
+ * @returns {{ [entryAlias: string]: string }} //
+ */
+function htmlInputs(command) {
+  const htmlFiles = glob
+    .sync(path.join(__dirname, "/**/*.html"))
+    .filter(
+      (htmlFilePath) =>
+        !htmlFilePath.includes("dist/") &&
+        !htmlFilePath.includes("tempHtmlFiles/"),
+    );
+
+  return Object.fromEntries(
+    htmlFiles.map((htmlFilePath) => {
+      const baseName = path.basename(htmlFilePath);
+
+      let actualHtmlFilePath = htmlFilePath;
+
+      // handle prod build
+      if (command === "build") {
+        // Copy over all html files to ./tempHtmlFiles
+        const htmlFileAppPath = htmlFilePath.split("/app/")[1];
+        const tempProdHtmlFilePath = path.resolve(
+          __dirname,
+          `${TEMP_PROD_HTML_DIR}/${htmlFileAppPath}`,
+        );
+        const tempProdHtmlFileDir = path.dirname(tempProdHtmlFilePath);
+        if (!existsSync(tempProdHtmlFileDir)) {
+          mkdirSync(tempProdHtmlFileDir, { recursive: true });
+        }
+        copyFileSync(htmlFilePath, `${tempProdHtmlFileDir}/${baseName}`);
+
+        // pass the path to the temp html files instead of the original to vite
+        actualHtmlFilePath = htmlFilePath.replace(
+          "/app/",
+          `/app/${TEMP_PROD_HTML_DIR}/`,
+        );
+      }
+
+      return [
+        baseName.slice(0, baseName.length - path.extname(baseName).length),
+        actualHtmlFilePath,
+      ];
+    }),
+  );
+}
+
 export default defineConfig(({ command }) => ({
   appType: "mpa",
   build: {
     // include source maps if env var set to true
     sourcemap: process.env.SOURCE_MAP === "true",
     rollupOptions: {
-      input: Object.fromEntries(
-        glob
-          .sync(path.join(__dirname, "/**/*.html"))
-          .filter(
-            (htmlFilePath) =>
-              !htmlFilePath.includes("dist/") &&
-              !htmlFilePath.includes("tempHtmlFiles/"),
-          )
-          .map((htmlFilePath) => {
-            const baseName = path.basename(htmlFilePath);
-
-            // Copy over all html files to ./tempHtmlFiles
-            const htmlFileAppPath = htmlFilePath.split("/app/")[1];
-            const tempProdHtmlFilePath = path.resolve(
-              __dirname,
-              `${TEMP_PROD_HTML_DIR}/${htmlFileAppPath}`,
-            );
-            const tempProdHtmlFileDir = path.dirname(tempProdHtmlFilePath);
-            if (!existsSync(tempProdHtmlFileDir)) {
-              mkdirSync(tempProdHtmlFileDir, { recursive: true });
-            }
-            copyFileSync(htmlFilePath, `${tempProdHtmlFileDir}/${baseName}`);
-
-            return [
-              baseName.slice(
-                0,
-                baseName.length - path.extname(baseName).length,
-              ),
-              // pass the path to the temp html files instead of the original to vite
-              htmlFilePath.replace("/app/", `/app/${TEMP_PROD_HTML_DIR}/`),
-            ];
-          }),
-      ),
+      input: htmlInputs(command),
     },
   },
   // we want to preserve the same directory structure between / at dev time and
