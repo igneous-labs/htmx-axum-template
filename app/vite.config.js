@@ -8,28 +8,50 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // import from "path" and "fs" causes eslint to crash for some reason
 const path = require("path");
-const { readFileSync, writeFileSync } = require("fs");
+const {
+  copyFileSync,
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} = require("fs");
 
+const TEMP_PROD_HTML_DIR = "tempHtmlFiles";
+
+/**
+ *
+ * @param {"build" | "serve"} command
+ * @returns {import("vite").PluginOption}
+ */
 function prodScriptPlugin(command) {
   return {
     name: "prod-script",
-    buildStart() {
+    buildStart(options) {
       if (command === "build") {
-        const targetFilePath = path.resolve(__dirname, "./templates/base.html");
-
-        const html = readFileSync(targetFilePath, "utf-8");
-
-        const updatedHtml = html.replace(
-          `<script type="module">
-      import "http://localhost:5173/@vite/client";
-      window.process = { env: { NODE_ENV: "development" } };
-    </script>
-    <script type="module" src="http://localhost:5173/js/index.js"></script>`,
-          `<script type="module" src="/js/index.js"></script>`,
+        const htmlFiles = Object.values(options.input).filter((file) =>
+          file.endsWith(".html"),
         );
 
-        writeFileSync(targetFilePath, updatedHtml);
+        for (const htmlFilePath of htmlFiles) {
+          const html = readFileSync(htmlFilePath, "utf-8");
+
+          const updatedHtml = html
+            // remove vite client import
+            .replace(
+              /<script type="module">\s*import "http:\/\/localhost:5173\/@vite\/client";[\s\S]+?window\.process = \{ env: \{ NODE_ENV: "development" \} \};\s*<\/script>/,
+              "",
+            )
+            // remove vite dev server url from everywhere (paths)
+            .replaceAll("http://localhost:5173", "");
+
+          writeFileSync(htmlFilePath, updatedHtml);
+        }
       }
+    },
+    buildEnd() {
+      // remove TEMP_PROD_HTML_DIR dir
+      rmSync(TEMP_PROD_HTML_DIR, { recursive: true, force: true });
     },
   };
 }
@@ -43,15 +65,33 @@ export default defineConfig(({ command }) => ({
       input: Object.fromEntries(
         glob
           .sync(path.join(__dirname, "/**/*.html"))
-          .filter((htmlFilePath) => !htmlFilePath.includes("dist/"))
+          .filter(
+            (htmlFilePath) =>
+              !htmlFilePath.includes("dist/") &&
+              !htmlFilePath.includes("tempHtmlFiles/"),
+          )
           .map((htmlFilePath) => {
             const baseName = path.basename(htmlFilePath);
+
+            // Copy over all html files to ./tempHtmlFiles
+            const htmlFileAppPath = htmlFilePath.split("/app/")[1];
+            const tempProdHtmlFilePath = path.resolve(
+              __dirname,
+              `${TEMP_PROD_HTML_DIR}/${htmlFileAppPath}`,
+            );
+            const tempProdHtmlFileDir = path.dirname(tempProdHtmlFilePath);
+            if (!existsSync(tempProdHtmlFileDir)) {
+              mkdirSync(tempProdHtmlFileDir, { recursive: true });
+            }
+            copyFileSync(htmlFilePath, `${tempProdHtmlFileDir}/${baseName}`);
+
             return [
               baseName.slice(
                 0,
                 baseName.length - path.extname(baseName).length,
               ),
-              htmlFilePath,
+              // pass the path to the temp html files instead of the original to vite
+              htmlFilePath.replace("/app/", `/app/${TEMP_PROD_HTML_DIR}/`),
             ];
           }),
       ),

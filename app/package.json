@@ -4,6 +4,7 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
+    "postbuild": "mv dist/tempHtmlFiles/* dist && rm -rf dist/tempHtmlFiles",
     "preview": "vite build && vite preview",
     "pretty": "prettier --write \"**/*.html\" \"**/*.css\" \"**/*.js\" \"**/*.json\"",
     "lint": "eslint --fix \"**/*.js\"",
