@@ -1,8 +1,12 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
+  {% block head %}
     <!-- <script type="module"> is always `defer` -->
-    <script type="module" src="/js/index.js"></script>
+    <script type="module">
+      import "http://localhost:5173/@vite/client";
+      window.process = { env: { NODE_ENV: "development" } };
+    </script>
+    <script type="module" src="http://localhost:5173/js/index.js"></script>
 
     <link href="/css/prod.css" rel="stylesheet" />
 
@@ -33,14 +37,9 @@
       name="viewport"
       content="width=device-width, initial-scale=1, minimum-scale=1"
     />
-    <title data-i18n-key="title">My Web App</title>
-  </head>
-  <body class="flex flex-col items-center space-y-1 px-4 py-2">
-    <h1 class="space-y-1 self-center text-center">My Web App</h1>
-    <form hx-post="/index/name" class="flex flex-col space-y-1">
-      <label for="name">Enter your name:</label>
-      <input id="name" name="name" class="border" />
-      <button type="submit" class="border">Submit</button>
-    </form>
-  </body>
+    <title data-i18n-key="title">{% block title %}{% endblock %}</title>
+  {% endblock %}
+
+  {% block body %}
+  {% endblock %}
 </html>

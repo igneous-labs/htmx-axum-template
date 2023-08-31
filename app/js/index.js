@@ -1,9 +1,44 @@
 /* eslint-disable */
-
-// we have to use relative imports straight from node_modules like this
-// because axum is serving the static files in dev mode, not vite,
-// and it knows nothing about resolving esm imports
-import * as _setup from "../node_modules/htmx.org/dist/htmx.js";
+import * as htmx from "htmx.org";
 // the import is a IIFE that sets global var `htmx`
 // @ts-ignore
 window.htmx = htmx;
+import {
+  defineCustomElement,
+  WALLET_CONNECTED_EVENT_TYPE,
+  WALLET_DISCONNECTED_EVENT_TYPE,
+} from "wallet-standard-list";
+// import {
+//   EthereumClient,
+//   w3mConnectors,
+//   w3mProvider,
+//   WagmiCore,
+//   WagmiCoreChains,
+//   WagmiCoreConnectors,
+// } from "@web3modal/ethereum";
+import { Web3Modal } from "@web3modal/html";
+console.log({ Web3Modal });
+
+// Wallet standard list
+defineCustomElement();
+
+window.addEventListener(WALLET_CONNECTED_EVENT_TYPE, ({ detail: wallet }) => {
+  document.getElementById("connected-wallet").innerText = wallet.name;
+  document.getElementById("first-account").innerText =
+    wallet.accounts[0].address;
+  document.getElementById("stake-button").removeAttribute("disabled");
+  document.getElementById("disconnect-button").removeAttribute("disabled");
+});
+
+window.addEventListener(WALLET_DISCONNECTED_EVENT_TYPE, () => {
+  document.getElementById("connected-wallet").innerText = "None";
+  document.getElementById("first-account").innerText = "None";
+  document.getElementById("stake-button").setAttribute("disabled", "1");
+  document.getElementById("disconnect-button").setAttribute("disabled", "1");
+});
+
+document.getElementById("disconnect-button").onclick = () => {
+  document.querySelector("wallet-standard-list").disconnect();
+};
+
+// WalletConnect

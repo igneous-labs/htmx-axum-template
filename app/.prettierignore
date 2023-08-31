@@ -2,6 +2,7 @@
 dist/
 
 pnpm-lock.yaml
-
-# don't mess up {{ }}
-templates/
+package.json
+jsconfig.json
+tailwind.config.js
+vite.config.js
