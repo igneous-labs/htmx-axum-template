@@ -39,7 +39,7 @@ function prodScriptPlugin(command) {
           const updatedHtml = html
             // remove vite client import
             .replace(
-              /<script type="module">\s*import "http:\/\/localhost:5173\/@vite\/client";[\s\S]+?window\.process = \{ env: \{ NODE_ENV: "development" \} \};\s*<\/script>/,
+              /<script type="module">\s*import "http:\/\/localhost:5173\/@vite\/client"[\s\S]*?<\/script>/,
               "",
             )
             // remove vite dev server url from everywhere (paths)
