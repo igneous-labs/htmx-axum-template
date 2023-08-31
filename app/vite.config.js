@@ -8,110 +8,62 @@ import { viteStaticCopy } from "vite-plugin-static-copy";
 
 // import from "path" and "fs" causes eslint to crash for some reason
 const path = require("path");
-const {
-  copyFileSync,
-  existsSync,
-  mkdirSync,
-  readFileSync,
-  rmSync,
-  writeFileSync,
-} = require("fs");
-
-const TEMP_PROD_HTML_DIR = "tempHtmlFiles";
 
 /**
  *
- * @param {"build" | "serve"} command
  * @returns {import("vite").PluginOption}
  */
-function prodScriptPlugin(command) {
+function prodScriptPlugin() {
   return {
     name: "prod-script",
-    buildStart(options) {
-      if (command === "build") {
-        const htmlFiles = Object.values(options.input).filter((file) =>
-          file.endsWith(".html"),
-        );
-
-        for (const htmlFilePath of htmlFiles) {
-          const html = readFileSync(htmlFilePath, "utf-8");
-
-          const updatedHtml = html
+    // TODO: think theres some weird caching shit or race condition going on:
+    // Had to rm node_modules and reinstall deps or else assets/404-[hash].css
+    // is generated instead of assets/index-[hash].css -> base.html not having
+    // a <link rel="stylesheet" href="/assets/index-[hash].css" />
+    transform(code, id) {
+      if (id.endsWith(".html")) {
+        return (
+          code
             // remove vite client import
             .replace(
               /<script type="module">\s*import "http:\/\/localhost:5173\/@vite\/client"[\s\S]*?<\/script>/,
               "",
             )
-            // remove vite dev server url from everywhere (paths)
-            .replaceAll("http://localhost:5173", "");
-
-          writeFileSync(htmlFilePath, updatedHtml);
-        }
+            // remove vite dev server url from everywhere (paths for js, css, assets)
+            .replaceAll("http://localhost:5173", "")
+        );
       }
-    },
-    buildEnd() {
-      // remove TEMP_PROD_HTML_DIR dir
-      rmSync(TEMP_PROD_HTML_DIR, { recursive: true, force: true });
+      return code;
     },
   };
 }
 
 /**
  *
- * @param {"build" | "serve"} command
  * @returns {{ [entryAlias: string]: string }} //
  */
-function htmlInputs(command) {
+function htmlInputs() {
   const htmlFiles = glob
     .sync(path.join(__dirname, "/**/*.html"))
-    .filter(
-      (htmlFilePath) =>
-        !htmlFilePath.includes("dist/") &&
-        !htmlFilePath.includes("tempHtmlFiles/"),
-    );
-
+    .filter((htmlFilePath) => !htmlFilePath.includes("dist/"));
   return Object.fromEntries(
     htmlFiles.map((htmlFilePath) => {
       const baseName = path.basename(htmlFilePath);
-
-      let actualHtmlFilePath = htmlFilePath;
-
-      // handle prod build
-      if (command === "build") {
-        // Copy over all html files to ./tempHtmlFiles
-        const htmlFileAppPath = htmlFilePath.split("/app/")[1];
-        const tempProdHtmlFilePath = path.resolve(
-          __dirname,
-          `${TEMP_PROD_HTML_DIR}/${htmlFileAppPath}`,
-        );
-        const tempProdHtmlFileDir = path.dirname(tempProdHtmlFilePath);
-        if (!existsSync(tempProdHtmlFileDir)) {
-          mkdirSync(tempProdHtmlFileDir, { recursive: true });
-        }
-        copyFileSync(htmlFilePath, `${tempProdHtmlFileDir}/${baseName}`);
-
-        // pass the path to the temp html files instead of the original to vite
-        actualHtmlFilePath = htmlFilePath.replace(
-          "/app/",
-          `/app/${TEMP_PROD_HTML_DIR}/`,
-        );
-      }
-
       return [
         baseName.slice(0, baseName.length - path.extname(baseName).length),
-        actualHtmlFilePath,
+        htmlFilePath,
       ];
     }),
   );
 }
 
-export default defineConfig(({ command }) => ({
+export default defineConfig(() => ({
   appType: "mpa",
   build: {
     // include source maps if env var set to true
     sourcemap: process.env.SOURCE_MAP === "true",
     rollupOptions: {
-      input: htmlInputs(command),
+      input: htmlInputs(),
     },
   },
   // we want to preserve the same directory structure between / at dev time and
@@ -158,6 +110,6 @@ export default defineConfig(({ command }) => ({
         background_color: "#FFFFFF",
       },
     }),
-    prodScriptPlugin(command),
+    prodScriptPlugin(),
   ],
 }));

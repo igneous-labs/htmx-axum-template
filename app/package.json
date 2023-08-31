@@ -4,12 +4,9 @@
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
-    "postbuild": "mv dist/tempHtmlFiles/* dist && rm -rf dist/tempHtmlFiles",
-    "preview": "vite build && vite preview",
+    "preview": "vite preview",
     "pretty": "prettier --write \"**/*.html\" \"**/*.css\" \"**/*.js\" \"**/*.json\"",
-    "lint": "eslint --fix \"**/*.js\"",
-    "tailwind": "tailwindcss -i css/index.css -o css/prod.css",
-    "tailwind-watch": "tailwindcss -i css/index.css -o css/prod.css --watch=always"
+    "lint": "eslint --fix \"**/*.js\""
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
