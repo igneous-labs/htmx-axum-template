@@ -32,7 +32,7 @@ Template for web apps using:
 Directory structure:
 
 ```
-├── app/             /* app/ contains the vite project */
+├── app/            /* app/ contains the vite project */
 ├── Cargo.lock      /* top level is the rust package */
 ├── Cargo.toml
 ├── src/
