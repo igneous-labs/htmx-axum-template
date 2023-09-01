@@ -32,10 +32,10 @@ Template for web apps using:
 Directory structure:
 
 ```
-├── app             /* app/ contains the vite project */
+├── app/             /* app/ contains the vite project */
 ├── Cargo.lock      /* top level is the rust package */
 ├── Cargo.toml
-├── src
+├── src/
 ```
 
 All frontend files (html, css, js, static assets) are stored in the `app/` folder.
@@ -71,9 +71,9 @@ This allows vite/rollup to proceed with the asset bundling correctly to create a
 
 This however introduce the following quirks:
 
-- during development, both a vite dev server and the axum server must be running
-- during development, `cargo run` must be run at the project root, else the html templates in the `app/` folder will not be served by it
-- we cannot use vite's `publicDir` feature in order to preserve the same directory structure at dev and prod time
+- during development, both the vite dev server and the axum server must be running
+- during development, `cargo run` must be run at the project root, else the html templates in the `app/` folder will not be served by the axum server
+- in order to preserve the same directory structure at dev and prod time, we cannot use vite's [publicDir](https://vitejs.dev/config/shared-options.html#publicdir) feature
 
 ## Setup
 
@@ -103,8 +103,8 @@ Add the files to `app/`, treating it as the `/` path, then update the `viteStati
 `Dockerfile` creates a production docker image from a minimal `scratch` image with the following directory structure:
 
 ```
-├── app         /* vite production build output (dist/) */
-├── my-web-app  /* release-compiled rust binary, image's CMD */
+├── app/         /* vite production build output (dist/) */
+├── my-web-app   /* release-compiled rust binary, image's CMD */
 ```
 
 - all images used in the multi-stage build are alpine-based
@@ -121,3 +121,5 @@ Add the files to `app/`, treating it as the `/` path, then update the `viteStati
 `docker run -p 3000:3000 --name my-web-app --init --rm my-web-app`
 
 `--init` allows the running container to be killed with `ctrl+c`
+
+`--rm` results in the container being deleted upon exit
