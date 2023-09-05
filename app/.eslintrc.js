@@ -3,10 +3,10 @@ module.exports = {
   env: {
     browser: true,
   },
-  ignorePatterns: ["dist/*", "templates/*"],
+  ignorePatterns: ["dist/*", "templates/*", "vite.config.js"],
   overrides: [
     {
-      files: "*.js",
+      files: ["*.js", "*.ts"],
       plugins: ["simple-import-sort"],
       extends: ["airbnb-base", "prettier"],
       parserOptions: {
@@ -17,7 +17,7 @@ module.exports = {
       settings: {
         "import/resolver": {
           jsconfig: {
-            config: "jsconfig.json",
+            config: "tsconfig.json",
           },
         },
       },

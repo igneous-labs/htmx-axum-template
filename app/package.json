@@ -23,6 +23,7 @@
     "prettier-plugin-jinja-template": "^1.0.0",
     "prettier-plugin-tailwindcss": "^0.5.3",
     "tailwindcss": "^3.3.3",
+    "typescript": "^5",
     "vite": "^4.1.4",
     "vite-plugin-pwa": "^0.14.4",
     "vite-plugin-static-copy": "^0.17"

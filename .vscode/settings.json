@@ -15,6 +15,15 @@
   // Enable auto import suggestions.
   "javascript.suggest.autoImports": true,
 
+  // use workspace ts version
+  "typescript.tsdk": "app/node_modules/typescript/lib",
+
+  // tab size 2 for ts
+  "[typescript]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+
   // tab size 2 for js
   "[javascript]": {
     "editor.tabSize": 2,
