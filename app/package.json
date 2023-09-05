@@ -34,6 +34,6 @@
     "@web3modal/html": "^2.7.1",
     "htmx.org": "^1.9.4",
     "viem": "^1.7.0",
-    "wallet-standard-list": "0.1.0"
+    "wallet-standard-list": "^0.1.2"
   }
 }

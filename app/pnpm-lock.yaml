@@ -21,8 +21,8 @@ dependencies:
     specifier: ^1.7.0
     version: 1.7.0(typescript@5.2.2)
   wallet-standard-list:
-    specifier: 0.1.0
-    version: 0.1.0
+    specifier: ^0.1.2
+    version: 0.1.2
 
 devDependencies:
   autoprefixer:
@@ -6005,8 +6005,8 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /wallet-standard-list@0.1.0:
-    resolution: {integrity: sha512-KGQEs898yWpkxNA4n0uHUW7bZUus84h7JvVj9OE0PN2vRNOmsEBihxBruUFB3/r2HbhetORMALQAsF1pfmmG/A==}
+  /wallet-standard-list@0.1.2:
+    resolution: {integrity: sha512-OtLFBQwb9bl5dHN3MJwHOU/bh4M2F4nnMUIntSq9hpeoIvC5QA49SB2z4ojNVyNPHnp7unw65zKZqVdKaaWRGg==}
     dependencies:
       '@wallet-standard/app': 1.0.1
     dev: false

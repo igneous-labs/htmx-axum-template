@@ -8,7 +8,7 @@ import {
   defineCustomElement,
   WALLET_CONNECTED_EVENT_TYPE,
   WALLET_DISCONNECTED_EVENT_TYPE,
-  // @ts-ignore TODO: add types to wallet-standard-list
+  type WalletStandardList,
 } from "wallet-standard-list";
 // import {
 //   EthereumClient,
@@ -24,6 +24,7 @@ console.log({ Web3Modal });
 // Wallet standard list
 defineCustomElement();
 
+// @ts-ignore
 window.addEventListener(WALLET_CONNECTED_EVENT_TYPE, ({ detail: wallet }) => {
   document.getElementById("connected-wallet")!.innerText = wallet.name;
   document.getElementById("first-account")!.innerText =
@@ -40,8 +41,10 @@ window.addEventListener(WALLET_DISCONNECTED_EVENT_TYPE, () => {
 });
 
 document.getElementById("disconnect-button")!.onclick = () => {
-  // @ts-ignore TODO: add types to wallet-standard-list
-  document.querySelector("wallet-standard-list")!.disconnect();
+  const wsl = document.querySelector(
+    "wallet-standard-list",
+  )! as WalletStandardList;
+  wsl.disconnect();
 };
 
 // WalletConnect
