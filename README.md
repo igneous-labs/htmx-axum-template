@@ -4,6 +4,7 @@ Template for web apps using:
 
 - [htmx](https://htmx.org)
 - [tailwindcss](https://tailwindcss.com/)
+- [typescript](https://www.typescriptlang.org/)
 - [axum](https://github.com/tokio-rs/axum) for server
 - [minijinja](https://github.com/mitsuhiko/minijinja) for templating
 - [vite](https://vitejs.dev/) for bundling js
@@ -38,16 +39,16 @@ Directory structure:
 ├── src/
 ```
 
-All frontend files (html, css, js, static assets) are stored in the `app/` folder.
+All frontend files (html, css, ts, static assets) are stored in the `app/` folder.
 
 Apart from running the htmx application, the axum server also statically serves all files in the `app/` dir next to it at path `/`.
 
 At development time, a vite dev server runs at port 5173, serving all the frontend files in `app/`. The axum server runs on port 3000. The web app is accessed via the axum server's port, 3000.
 
-All html templates include resources (js, css, static assets) from `http://localhost:5173/`. Example:
+All html templates include resources (ts, css, static assets) from `http://localhost:5173/`. Example:
 
 ```html
-<script type="module" src="http://localhost:5173/js/index.js"></script>
+<script type="module" src="http://localhost:5173/ts/index.ts"></script>
 ```
 
 They also import and run the vite client to connect to the vite dev server using this snippet:
@@ -64,7 +65,7 @@ This enables hot reloading.
 At production build time (`vite build`), a custom [rollup transform plugin](https://rollupjs.org/plugin-development/#transform) configured in `vite.config.js` preprocesses all html files by removing the above vite client snippet. It also deletes all instances of `http://localhost:5173/`, resulting in all includes importing from `/` instead. For example, the above `<script>` snippet is transformed into:
 
 ```html
-<script type="module" src="/js/index.js"></script>
+<script type="module" src="/ts/index.ts"></script>
 ```
 
 This allows vite/rollup to proceed with the asset bundling correctly to create an output `dist/` folder to be statically served in an `app/` folder by our axum server.
