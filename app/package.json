@@ -26,7 +26,8 @@
     "typescript": "^5",
     "vite": "^4.1.4",
     "vite-plugin-pwa": "^0.14.4",
-    "vite-plugin-static-copy": "^0.17"
+    "vite-plugin-static-copy": "^0.17",
+    "workbox-window": "^6.5.4"
   },
   "dependencies": {
     "@wagmi/core": "^1.3.9",

@@ -48,16 +48,27 @@ function htmlInputs() {
     .filter((htmlFilePath) => !htmlFilePath.includes("dist/"));
   return Object.fromEntries(
     htmlFiles.map((htmlFilePath) => {
-      const baseName = path.basename(htmlFilePath);
-      return [
-        baseName.slice(0, baseName.length - path.extname(baseName).length),
-        htmlFilePath,
-      ];
+      const pathSegments = htmlFilePath.split(path.sep);
+      while (pathSegments[0] !== "app") {
+        pathSegments.shift();
+      }
+      pathSegments.shift(); // remove leading app/
+
+      const baseName = pathSegments[pathSegments.length - 1];
+      if (!baseName) {
+        throw new Error(`Error parsing path: ${htmlFilePath}`);
+      }
+      const baseNameNoExt = baseName.replace(path.extname(baseName), "");
+      pathSegments[pathSegments.length - 1] = baseNameNoExt;
+      const alias = pathSegments.join(path.sep);
+
+      return [alias, htmlFilePath];
     }),
   );
 }
 
 export default defineConfig(() => ({
+  /** @type {"mpa"} */
   appType: "mpa",
   build: {
     // include source maps if env var set to true
@@ -69,6 +80,7 @@ export default defineConfig(() => ({
   // we want to preserve the same directory structure between / at dev time and
   // dist/ at prod time, so copy static files manually with viteStaticCopy
   // instead of using the public/ dir
+  /** @type {false} */
   publicDir: false,
   plugins: [
     viteStaticCopy({
