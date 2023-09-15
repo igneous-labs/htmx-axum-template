@@ -91,6 +91,14 @@ export default defineConfig(() => ({
       ],
     }),
     VitePWA({
+      workbox: {
+        // no point precaching html templates on client
+        globIgnores: ["templates/**"],
+        globPatterns: [
+          "**/*.{js,css,html}", // default
+          "assets/**",
+        ],
+      },
       includeAssets: [`favicon.ico`, `images/logo/apple-touch-icon.png`],
       manifest: {
         name: "My Web App",
@@ -115,7 +123,6 @@ export default defineConfig(() => ({
             purpose: "any maskable",
           },
         ],
-        start_url: `index.html`,
         display: "fullscreen",
         // TODO: USE ACTUAL THEME COLORS
         theme_color: "#FFFFFF",
