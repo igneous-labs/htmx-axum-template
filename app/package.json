@@ -30,11 +30,6 @@
     "workbox-window": "^6.5.4"
   },
   "dependencies": {
-    "@wagmi/core": "^1.3.9",
-    "@web3modal/ethereum": "^2.7.1",
-    "@web3modal/html": "^2.7.1",
-    "htmx.org": "^1.9.4",
-    "viem": "^1.7.0",
-    "wallet-standard-list": "^0.1.2"
+    "htmx.org": "^1.9.4"
   }
 }

@@ -10,18 +10,5 @@
       <input id="name" name="name" class="border" />
       <button type="submit" class="border">Submit</button>
     </form>
-
-    <wallet-standard-list
-      required-features="solana:signAndSendTransaction, solana:signTransaction"
-    ></wallet-standard-list>
-
-    <h3>Connected Wallet: <span id="connected-wallet">None</span></h3>
-    <h3>First Account: <span id="first-account">None</span></h3>
-    <footer>
-      <button type="button" id="disconnect-button" disabled>Disconnect</button>
-      <button type="button" id="stake-button" disabled>
-        Stake 1 SOL to Laine
-      </button>
-    </footer>
   </div>
 {% endblock %}
