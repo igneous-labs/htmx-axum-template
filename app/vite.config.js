@@ -45,7 +45,11 @@ function prodScriptPlugin() {
 function htmlInputs() {
   const htmlFiles = glob
     .sync(path.join(__dirname, "/**/*.html"))
-    .filter((htmlFilePath) => !htmlFilePath.includes("dist/"));
+    .filter(
+      (htmlFilePath) =>
+        !htmlFilePath.includes("dist/") &&
+        !htmlFilePath.includes("node_modules/"),
+    );
   return Object.fromEntries(
     htmlFiles.map((htmlFilePath) => {
       const pathSegments = htmlFilePath.split(path.sep);
