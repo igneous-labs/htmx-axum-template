@@ -1,17 +1,16 @@
 # vite build
-FROM node:18-alpine3.18 as vite
+FROM oven/bun as vite
 WORKDIR /app
-RUN npm install -g pnpm
 
 FROM vite as npm-installer
-COPY app/pnpm-lock.yaml .
+COPY app/bun.lockb .
 COPY app/package.json .
-RUN pnpm install
+RUN bun install
 
 FROM vite as frontend-builder
 COPY --from=npm-installer app/node_modules ./node_modules
 COPY app .
-RUN pnpm build
+RUN bun run build
 
 # rust build
 FROM rust:1.71.0-alpine3.18 as chef

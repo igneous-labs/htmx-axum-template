@@ -8,7 +8,7 @@ Template for web apps using:
 - [axum](https://github.com/tokio-rs/axum) for server
 - [minijinja](https://github.com/mitsuhiko/minijinja) for templating
 - [vite](https://vitejs.dev/) for bundling js
-- [pnpm](https://pnpm.io/) for js package management
+- [bun](https://bun.sh) for js package management and runtime
 - [pre-commit](https://pre-commit.com/) for linting both backend and frontend code
 
 ## Contents
@@ -80,7 +80,7 @@ This however introduce the following quirks:
 
 ### Requirements
 
-- [pnpm](https://pnpm.io/installation)
+- [bun](https://bun.sh/docs/installation)
 - [rust](https://www.rust-lang.org/tools/install)
 
 ### Install pre-commit
@@ -89,7 +89,7 @@ This however introduce the following quirks:
 
 ### Install js dependencies
 
-`cd app && pnpm install`
+`cd app && bun install`
 
 ## Development
 
@@ -110,7 +110,7 @@ Add the files to `app/`, treating it as the `/` path, then update the `viteStati
 
 - all images used in the multi-stage build are alpine-based
 - `x86_64-unknown-linux-musl` is used as the rust server's compile target to create a fully statically-linked binary
-- js dependencies in `node_modules/` are cached between builds (dependent on `app/package.json` and `app/pnpm-lock.yaml` not changing)
+- js dependencies in `node_modules/` are cached between builds (dependent on `app/package.json` and `app/bun.lockb` not changing)
 - [cargo chef](https://github.com/LukeMathWalker/cargo-chef) is used to cache rust dependencies between builds (dependent on `Cargo.toml` and `Cargo.lock` not changing)
 
 ### Build

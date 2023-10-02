@@ -14,7 +14,7 @@ on_ctrl_c() {
     exit
 }
 
-cd $PROJECT_ROOT/app && pnpm dev &
+cd $PROJECT_ROOT/app && bun dev &
 VITE_DEV_PID=$!
 
 cd $PROJECT_ROOT && cargo run dev
